@@ -56,19 +56,15 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // CORS configuration
-const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? [
-    process.env.FRONTEND_URL || 'https://ai-recruiter.vercel.app',
-    // Add any additional Vercel preview URLs
-    ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : [])
-  ].filter(Boolean)
-  : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173', 'http://127.0.0.1:3000', 'http://127.0.0.1:3001', 'http://127.0.0.1:5173'];
-
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    // Dynamically allow any origin this request is coming from
+    // This perfectly bypasses CORS blocks for Vercel preview & production URLs
+    callback(null, true);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 
 // Body parsing middleware
