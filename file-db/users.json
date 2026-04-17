@@ -1,0 +1,24 @@
+[
+  {
+    "_id": "1775456489677",
+    "name": "Tejas Borade (Admin)",
+    "email": "boradetejas39@gmail.com",
+    "password": "$2a$12$1D5cS89/Oo5W.vjAFni2f.RN9HHEuU9E2LwC31n34XV10/0zUsh4i",
+    "role": "admin",
+    "company": "AI Recruiter",
+    "createdAt": "2026-04-06T06:21:29.677Z",
+    "lastLogin": "2026-04-06T06:21:29.681Z",
+    "isActive": true
+  },
+  {
+    "_id": "73184e83-99e6-427b-a26e-71682afc57bc",
+    "name": "Tej Borade",
+    "email": "tejborade2021@gmail.com",
+    "password": "$2a$12$LKVf0UYFiodVraCjppndGe3xO4VNHGL3Ypp2/L.nDiknR8pg1iqWO",
+    "role": "user",
+    "company": "",
+    "isActive": true,
+    "createdAt": "2026-04-09T18:25:08.263Z",
+    "lastLogin": null
+  }
+]

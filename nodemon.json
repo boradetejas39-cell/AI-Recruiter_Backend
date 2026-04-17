@@ -1,0 +1,3 @@
+{
+  "ignore": ["test_*.js", "*.test.js", "logs/*", "uploads/*", "file-db/*"]
+}

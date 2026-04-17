@@ -1,0 +1,322 @@
+[
+  {
+    "_id": "1771011020248",
+    "title": "Senior Software Engineer",
+    "description": "We are looking for a senior software engineer with experience in React and Node.js",
+    "location": "Bangalore, India",
+    "jobType": "full-time",
+    "department": "Engineering",
+    "priority": "medium",
+    "status": "active",
+    "requiredSkills": [
+      "JavaScript",
+      "React",
+      "Node.js"
+    ],
+    "experienceRequired": {
+      "min": 3,
+      "max": 7,
+      "type": "years"
+    },
+    "salary": {
+      "min": 800000,
+      "max": 1500000,
+      "currency": "INR"
+    },
+    "createdBy": "1771005660446",
+    "createdAt": "2026-02-13T19:30:20.249Z",
+    "updatedAt": "2026-02-13T19:30:20.249Z"
+  },
+  {
+    "_id": "1771011820180",
+    "title": "Senior Software Engineer",
+    "description": "We are looking for a senior software engineer with experience in React and Node.js",
+    "location": "Bangalore, India",
+    "jobType": "full-time",
+    "department": "Engineering",
+    "priority": "medium",
+    "status": "active",
+    "requiredSkills": [
+      "JavaScript",
+      "React",
+      "Node.js"
+    ],
+    "experienceRequired": {
+      "min": 3,
+      "max": 7,
+      "type": "years"
+    },
+    "salary": {
+      "min": 800000,
+      "max": 1500000,
+      "currency": "INR"
+    },
+    "createdBy": "1771005660446",
+    "createdAt": "2026-02-13T19:43:40.181Z",
+    "updatedAt": "2026-02-13T19:43:40.181Z"
+  },
+  {
+    "_id": "1771011918341",
+    "title": "Senior Software Engineer",
+    "description": "We are looking for a senior software engineer with experience in React and Node.js",
+    "location": "Bangalore, India",
+    "jobType": "full-time",
+    "department": "Engineering",
+    "priority": "medium",
+    "status": "active",
+    "requiredSkills": [
+      "JavaScript",
+      "React",
+      "Node.js"
+    ],
+    "experienceRequired": {
+      "min": 3,
+      "max": 7,
+      "type": "years"
+    },
+    "salary": {
+      "min": 800000,
+      "max": 1500000,
+      "currency": "INR"
+    },
+    "createdBy": "1771005660446",
+    "createdAt": "2026-02-13T19:45:18.342Z",
+    "updatedAt": "2026-02-13T19:45:18.342Z"
+  },
+  {
+    "_id": "1771012760950",
+    "title": "sot",
+    "description": "JobCreate.js:99 Error config: \nObject\nonSubmit\t@\tJobCreate.js:99",
+    "location": "Nashik",
+    "department": "B.Tech",
+    "jobType": "full-time",
+    "priority": "low",
+    "status": "active",
+    "requiredSkills": [
+      "javascrip"
+    ],
+    "experienceRequired": {
+      "min": 1,
+      "max": 1,
+      "type": "years"
+    },
+    "salary": {
+      "min": 1000,
+      "max": 3000,
+      "currency": "INR"
+    },
+    "createdBy": "1771007218614",
+    "createdAt": "2026-02-13T19:59:20.952Z",
+    "updatedAt": "2026-02-13T19:59:20.953Z"
+  },
+  {
+    "_id": "1771012860339",
+    "title": "software intern",
+    "description": "💻 Web Developer Intern\nWork on website development, UI updates, bug fixing, and basic front-end/back-end tasks using modern web technologies",
+    "location": "Nashik",
+    "department": "B.Tech",
+    "jobType": "internship",
+    "priority": "low",
+    "status": "active",
+    "requiredSkills": [
+      "html",
+      "css",
+      "JavaScript"
+    ],
+    "experienceRequired": {
+      "min": 0,
+      "max": 2,
+      "type": "years"
+    },
+    "salary": {
+      "min": 4000,
+      "max": 10000,
+      "currency": "INR"
+    },
+    "createdBy": "1771007218614",
+    "createdAt": "2026-02-13T20:01:00.339Z",
+    "updatedAt": "2026-02-13T20:01:00.339Z"
+  },
+  {
+    "_id": "1771013162080",
+    "title": "software engineering",
+    "description": "💻 Web Developer Intern\nWork on website development, UI updates, bug fixing, and basic front-end/back-end tasks using modern web technologies",
+    "location": "Nashik",
+    "department": "B.Tech",
+    "jobType": "full-time",
+    "priority": "low",
+    "status": "active",
+    "requiredSkills": [
+      "Javasctipt"
+    ],
+    "experienceRequired": {
+      "min": 1,
+      "max": 2,
+      "type": "years"
+    },
+    "salary": {
+      "min": 1000,
+      "max": 3000,
+      "currency": "INR"
+    },
+    "createdBy": "1771007218614",
+    "createdAt": "2026-02-13T20:06:02.080Z",
+    "updatedAt": "2026-02-13T20:06:02.080Z"
+  },
+  {
+    "_id": "1771013286213",
+    "title": "software engineer",
+    "description": "💻 Web Developer Intern\nWork on website development, UI updates, bug fixing, and basic front-end/back-end tasks using modern web technologies",
+    "location": "Nashik",
+    "department": "B.Tech",
+    "jobType": "internship",
+    "priority": "low",
+    "status": "active",
+    "requiredSkills": [
+      "React"
+    ],
+    "experienceRequired": {
+      "min": 1,
+      "max": 2,
+      "type": "years"
+    },
+    "salary": {
+      "min": 2000,
+      "max": 4000,
+      "currency": "INR"
+    },
+    "createdBy": "1771007218614",
+    "createdAt": "2026-02-13T20:08:06.213Z",
+    "updatedAt": "2026-02-13T20:08:06.213Z"
+  },
+  {
+    "_id": "1771013403655",
+    "title": "software intern",
+    "description": "JobDetail.js:35 Error fetching job: AxiosError: Request failed with status code 404\n    at async fetchJob (JobDetail.js:31:1)",
+    "location": "Nashik",
+    "department": "B.Tech",
+    "jobType": "full-time",
+    "priority": "low",
+    "status": "active",
+    "requiredSkills": [
+      "react"
+    ],
+    "experienceRequired": {
+      "min": 1,
+      "max": 2,
+      "type": "years"
+    },
+    "salary": {
+      "min": 5000,
+      "max": 13000,
+      "currency": "INR"
+    },
+    "createdBy": "1771007218614",
+    "createdAt": "2026-02-13T20:10:03.655Z",
+    "updatedAt": "2026-02-13T20:10:03.655Z"
+  },
+  {
+    "_id": "1771013658820",
+    "title": "software intern",
+    "description": "JobDetail.js:35 Error fetching job: AxiosError: Request failed with status code 404\n    at async fetchJob (JobDetail.js:31:1)",
+    "location": "Nashik",
+    "department": "engineering",
+    "jobType": "full-time",
+    "priority": "low",
+    "requiredSkills": [
+      "JavaScript"
+    ],
+    "experienceRequired": {
+      "min": 1,
+      "max": 2,
+      "type": "years"
+    },
+    "salary": {
+      "min": 3000,
+      "max": 10000,
+      "currency": "INR"
+    },
+    "status": "active",
+    "createdBy": "1771007218614",
+    "createdAt": "2026-02-13T20:14:18.820Z",
+    "updatedAt": "2026-02-13T20:14:18.820Z"
+  },
+  {
+    "_id": "1771013860015",
+    "title": "software developer",
+    "description": "mongodb+srv://ai_smart_recruiter:<db_password>@recruiter.vsvy6cx.mongodb.net/?appName=Recruiter",
+    "location": "Nashik",
+    "department": "B.Tech",
+    "jobType": "full-time",
+    "priority": "low",
+    "requiredSkills": [
+      "React"
+    ],
+    "experienceRequired": {
+      "min": 1,
+      "max": 0,
+      "type": "years"
+    },
+    "salary": {
+      "min": 1000,
+      "max": 2000,
+      "currency": "INR"
+    },
+    "status": "active",
+    "createdBy": "1771007218614",
+    "createdAt": "2026-02-13T20:17:40.016Z",
+    "updatedAt": "2026-02-13T20:17:40.016Z"
+  },
+  {
+    "_id": "1771014139906",
+    "title": "si",
+    "description": "This site can’t be reached",
+    "location": "Nashik",
+    "department": "B.Tech",
+    "jobType": "full-time",
+    "priority": "low",
+    "requiredSkills": [
+      "cpp"
+    ],
+    "experienceRequired": {
+      "min": 1,
+      "max": 2,
+      "type": "years"
+    },
+    "salary": {
+      "min": 4000,
+      "max": 11000,
+      "currency": "INR"
+    },
+    "status": "active",
+    "createdBy": "1771007218614",
+    "createdAt": "2026-02-13T20:22:19.906Z",
+    "updatedAt": "2026-02-13T20:22:19.906Z"
+  },
+  {
+    "_id": "1771014425627",
+    "title": "dfdf",
+    "description": "fsfsdsfdfdfd",
+    "location": "dsffsdf",
+    "department": "sfdfdfsdf",
+    "jobType": "full-time",
+    "priority": "low",
+    "requiredSkills": [
+      "dsfdfdf"
+    ],
+    "experienceRequired": {
+      "min": 2,
+      "max": 3,
+      "type": "years"
+    },
+    "salary": {
+      "min": 8000,
+      "max": 27000,
+      "currency": "INR"
+    },
+    "status": "active",
+    "createdBy": "1771007218614",
+    "createdAt": "2026-02-13T20:27:05.627Z",
+    "updatedAt": "2026-02-13T20:27:05.627Z"
+  }
+]
