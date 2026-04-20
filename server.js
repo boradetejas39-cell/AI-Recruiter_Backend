@@ -179,10 +179,61 @@ app.use('*', (req, res) => {
   });
 });
 
+// ── WebRTC Signaling via Socket.IO ──────────────────────────────
+const http = require('http');
+const { Server: SocketIOServer } = require('socket.io');
+
+const httpServer = http.createServer(app);
+const io = new SocketIOServer(httpServer, {
+  cors: { origin: '*', methods: ['GET', 'POST'] }
+});
+
+// Simple in-memory room registry { interviewId -> Set<socketId> }
+const rooms = new Map();
+
+io.on('connection', (socket) => {
+  console.log('[Socket] connected:', socket.id);
+
+  // Join a video room keyed by interviewId
+  socket.on('join-room', ({ interviewId, role }) => {
+    const roomId = `interview-${interviewId}`;
+    socket.join(roomId);
+    socket.data.roomId = roomId;
+    socket.data.role = role;
+
+    // Notify others in the room that a new peer arrived
+    socket.to(roomId).emit('peer-joined', { socketId: socket.id, role });
+    console.log(`[Socket] ${role} (${socket.id}) joined ${roomId}`);
+  });
+
+  // Relay WebRTC offer
+  socket.on('webrtc-offer', ({ to, offer }) => {
+    io.to(to).emit('webrtc-offer', { from: socket.id, offer });
+  });
+
+  // Relay WebRTC answer
+  socket.on('webrtc-answer', ({ to, answer }) => {
+    io.to(to).emit('webrtc-answer', { from: socket.id, answer });
+  });
+
+  // Relay ICE candidates
+  socket.on('webrtc-ice', ({ to, candidate }) => {
+    io.to(to).emit('webrtc-ice', { from: socket.id, candidate });
+  });
+
+  socket.on('disconnect', () => {
+    const { roomId, role } = socket.data;
+    if (roomId) {
+      socket.to(roomId).emit('peer-left', { socketId: socket.id, role });
+    }
+    console.log('[Socket] disconnected:', socket.id);
+  });
+});
+
 // Database connection and server start
 const startServer = () => {
   const PORT = process.env.PORT || 5001;
-  app.listen(PORT, () => {
+  httpServer.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV}`);
   });
