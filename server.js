@@ -195,15 +195,24 @@ io.on('connection', (socket) => {
   console.log('[Socket] connected:', socket.id);
 
   // Join a video room keyed by interviewId
-  socket.on('join-room', ({ interviewId, role }) => {
+  socket.on('join-room', async ({ interviewId, role }) => {
     const roomId = `interview-${interviewId}`;
     socket.join(roomId);
     socket.data.roomId = roomId;
     socket.data.role = role;
 
+    // Fetch existing sockets in this room (before we notified them of our arrival)
+    const sockets = await io.in(roomId).fetchSockets();
+    const otherUsers = sockets
+      .filter(s => s.id !== socket.id)
+      .map(s => ({ socketId: s.id, role: s.data.role }));
+
+    // Tell the joining user about existing users in the room
+    socket.emit('existing-users', otherUsers);
+
     // Notify others in the room that a new peer arrived
     socket.to(roomId).emit('peer-joined', { socketId: socket.id, role });
-    console.log(`[Socket] ${role} (${socket.id}) joined ${roomId}`);
+    console.log(`[Socket] ${role} (${socket.id}) joined ${roomId}. Others in room: ${otherUsers.length}`);
   });
 
   // Relay WebRTC offer
