@@ -282,3 +282,42 @@ exports.getInterviews = async (req, res) => {
         return serverError(res, 'Failed to fetch interviews', error);
     }
 };
+
+// ── POST /api/v2/interviews/:id/complete-hr ──────────────────────
+exports.completeHRRound = async (req, res) => {
+    try {
+        const interview = await Interview.findById(req.params.id).populate('candidateId');
+        if (!interview) return notFound(res, 'Interview not found');
+
+        // Only HR/Admin can complete the HR round
+        if (!['admin', 'hr', 'recruiter'].includes(req.user.role)) {
+            return badRequest(res, 'Unauthorized to complete HR round');
+        }
+
+        interview.status = 'completed';
+        interview.completedAt = new Date();
+        await interview.save();
+
+        // Send confirmation email to candidate
+        try {
+            const job = await Job.findById(interview.jobId);
+            sendEmail(interview.candidateId.email, 'hr_interview_completed', {
+                candidateName: interview.candidateId.name,
+                jobTitle: job ? job.title : 'the position'
+            }).catch(e => logger.error('Email failed from completeHRRound', e));
+        } catch (e) {
+            logger.error('Email logic failed in completeHRRound', e);
+        }
+
+        ActivityLog.record({
+            userId: req.user._id, action: 'hr_interview_completed',
+            description: `HR Round completed for interview ${interview._id}`,
+            targetModel: 'Interview', targetId: interview._id
+        }).catch(() => { });
+
+        return ok(res, 'HR Round completed successfully');
+    } catch (error) {
+        logger.error('Complete HR round error', { error: error.message });
+        return serverError(res, 'Failed to complete HR round', error);
+    }
+};

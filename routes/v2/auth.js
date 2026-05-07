@@ -14,6 +14,7 @@ const { authLimiter } = require('../../middleware/rateLimiter');
 // Public routes with rate limiting
 router.post('/register', authLimiter, validate(schemas.register), authController.register);
 router.post('/login', authLimiter, validate(schemas.login), authController.login);
+router.post('/google', authLimiter, authController.googleLogin);
 router.post('/forgot-password', authLimiter, validate(schemas.forgotPassword), authController.forgotPassword);
 router.put('/reset-password/:token', validate(schemas.resetPassword), authController.resetPassword);
 

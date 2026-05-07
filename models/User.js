@@ -51,7 +51,10 @@ const userSchema = new mongoose.Schema({
   // Account blocking
   isBlocked: { type: Boolean, default: false },
   blockedReason: { type: String, default: '' },
-  blockedAt: { type: Date, default: null }
+  blockedAt: { type: Date, default: null },
+  // Social Auth
+  googleId: { type: String, unique: true, sparse: true },
+  avatar: { type: String, default: '' }
 }, {
   timestamps: true
 });

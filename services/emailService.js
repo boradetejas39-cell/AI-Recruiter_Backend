@@ -130,6 +130,18 @@ const TEMPLATES = {
     `
     }),
 
+    hr_interview_completed: (data) => ({
+        subject: `Interview Process Completed — ${data.jobTitle}`,
+        html: `
+      <h2>HR Interview Completed</h2>
+      <p>Dear ${data.candidateName || 'Candidate'},</p>
+      <p>Thank you for attending the HR interview round for <strong>${data.jobTitle}</strong>.</p>
+      <p>We're pleased to inform you that your interview process is now complete. Our team will review your performance across all rounds and we will connect you shortly with an update.</p>
+      <p>Thank you for your interest in joining our team!</p>
+      <br><p>Best regards,<br>AI Recruiter Team</p>
+    `
+    }),
+
     interview_scheduled: (data) => ({
         subject: `AI Interview Ready — ${data.jobTitle}`,
         html: `

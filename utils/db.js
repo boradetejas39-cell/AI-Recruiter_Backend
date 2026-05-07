@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
+const logger = require('./logger');
 
 /**
  * Connect to MongoDB using MONGODB_URI or MONGO_URI from environment.
@@ -29,9 +30,11 @@ async function connectDB() {
             serverSelectionTimeoutMS: 5000,
         });
         console.log('✅ Connected to MongoDB');
+        logger.info('✅ Database connection: Connected to MongoDB');
         return true;
     } catch (err) {
         console.error('MongoDB connection error:', err.message || err);
+        logger.error('❌ MongoDB connection error', { error: err.message });
         // Don't throw - let the server start without DB
         return false;
     }

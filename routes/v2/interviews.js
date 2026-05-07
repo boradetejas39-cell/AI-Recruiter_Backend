@@ -33,4 +33,9 @@ router.post('/:id/evaluate',
     interviewController.evaluateInterview
 );
 
+router.post('/:id/complete-hr',
+    hrOrAdmin,
+    interviewController.completeHRRound
+);
+
 module.exports = router;

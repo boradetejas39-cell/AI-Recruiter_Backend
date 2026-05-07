@@ -5,6 +5,9 @@ const ActivityLog = require('../models/ActivityLog');
 const emailService = require('../services/emailService');
 const logger = require('../utils/logger');
 const { ok, created, badRequest, unauthorized, notFound, serverError } = require('../utils/apiResponse');
+const { OAuth2Client } = require('google-auth-library');
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 /**
  * Auth Controller — Registration, Login, Forgot/Reset Password, Profile
@@ -19,15 +22,23 @@ const signToken = (userId) => {
 
 // ── POST /api/v2/auth/register ──────────────────────────────────
 exports.register = async (req, res) => {
+    const startTime = Date.now();
     try {
         const { name, email, password, role, company } = req.body;
+        logger.info(`[Auth] Registration attempt started for: ${email}`, { role });
 
         // Check existing user
         const existing = await User.findOne({ email });
-        if (existing) return badRequest(res, 'Email already registered');
-
+        if (existing) {
+            logger.warn(`[Auth] Registration failed: Email ${email} already exists`);
+            return badRequest(res, 'Email already registered');
+        }
+        logger.info(`[Auth] Email check passed for ${email} in ${Date.now() - startTime}ms`);
         const user = await User.create({ name, email, password, role, company });
+        logger.info(`[Auth] User created in DB for ${email} in ${Date.now() - startTime}ms`);
+        
         const token = signToken(user._id);
+        logger.info(`[Auth] Token generated for ${email} in ${Date.now() - startTime}ms`);
 
         // Activity log
         ActivityLog.record({
@@ -39,18 +50,19 @@ exports.register = async (req, res) => {
 
         logger.info('User registered', { email, role: user.role });
 
-        // Send welcome email
-        logger.info('Attempting to send registration welcome email', { to: user.email });
-        try {
-            const emailResult = await emailService.sendEmail(user.email, 'registration_welcome', { name: user.name });
-            if (emailResult.success) {
-                logger.info('✅ Registration welcome email sent successfully', { to: user.email, messageId: emailResult.messageId });
-            } else {
-                logger.error('❌ Registration email failed', { to: user.email, error: emailResult.error });
-            }
-        } catch (emailErr) {
-            logger.error('❌ Registration email threw exception', { to: user.email, error: emailErr.message });
-        }
+        // Send welcome email (Non-blocking)
+        logger.info('Queueing registration welcome email', { to: user.email });
+        emailService.sendEmail(user.email, 'registration_welcome', { name: user.name })
+            .then(result => {
+                if (result.success) {
+                    logger.info('✅ Registration welcome email sent successfully', { to: user.email, messageId: result.messageId });
+                } else {
+                    logger.error('❌ Registration email failed', { to: user.email, error: result.error });
+                }
+            })
+            .catch(err => {
+                logger.error('❌ Registration email exception', { to: user.email, error: err.message });
+            });
 
         return created(res, 'Registration successful', {
             token,
@@ -97,6 +109,112 @@ exports.login = async (req, res) => {
         return serverError(res, 'Login failed', error);
     }
 };
+
+// ── POST /api/v2/auth/google ────────────────────────────────────
+exports.googleLogin = async (req, res) => {
+    try {
+        const { credential, access_token, role } = req.body;
+
+        if (!credential && !access_token) {
+            return badRequest(res, 'Google credential or access_token is required');
+        }
+
+        let email, name, picture, googleId;
+
+        if (credential) {
+            // Verify ID token
+            try {
+                const ticket = await googleClient.verifyIdToken({
+                    idToken: credential,
+                    audience: process.env.GOOGLE_CLIENT_ID
+                });
+                const payload = ticket.getPayload();
+                ({ email, name, picture, sub: googleId } = payload);
+            } catch (err) {
+                logger.error('Google ID token verification failed', { error: err.message });
+                return unauthorized(res, 'Invalid Google token');
+            }
+        } else {
+            // Verify access token via Google API
+            try {
+                const axios = require('axios');
+                const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: { Authorization: `Bearer ${access_token}` }
+                });
+                ({ email, name, picture, sub: googleId } = response.data);
+            } catch (err) {
+                logger.error('Google access_token verification failed', { error: err.message });
+                return unauthorized(res, 'Invalid Google access token');
+            }
+        }
+
+        if (!email) return badRequest(res, 'Could not retrieve email from Google');
+
+        // Check if user exists
+        let user = await User.findOne({ email });
+
+        if (user) {
+            // Existing user — link Google ID if not set
+            if (!user.googleId) {
+                user.googleId = googleId;
+                if (!user.avatar) user.avatar = picture;
+                await user.save({ validateBeforeSave: false });
+            }
+            logger.info('User logged in via Google', { email });
+        } else {
+            // New user — create account
+            const randomPassword = crypto.randomBytes(16).toString('hex');
+            user = await User.create({
+                name,
+                email,
+                password: randomPassword,
+                role: role || 'user',
+                googleId,
+                avatar: picture,
+                isActive: true
+            });
+            logger.info('New user registered via Google', { email, role: user.role });
+
+            // Send welcome email (Non-blocking)
+            logger.info('Queueing Google welcome email', { to: user.email });
+            emailService.sendEmail(user.email, 'registration_welcome', { name: user.name })
+                .then(result => {
+                    if (result.success) {
+                        logger.info('✅ Google welcome email sent successfully', { to: user.email });
+                    } else {
+                        logger.error('❌ Google welcome email failed', { to: user.email, error: result.error });
+                    }
+                })
+                .catch(err => {
+                    logger.error('❌ Google welcome email exception', { to: user.email, error: err.message });
+                });
+        }
+
+        // Check if blocked
+        if (user.isBlocked) return unauthorized(res, 'Account blocked');
+
+        // Update last login
+        user.lastLogin = new Date();
+        await user.save({ validateBeforeSave: false });
+
+        const token = signToken(user._id);
+
+        ActivityLog.record({
+            userId: user._id, action: 'user_google_login',
+            description: `User logged in via Google: ${email}`,
+            ip: req.ip
+        }).catch(() => { });
+
+        return ok(res, 'Google authentication successful', {
+            token,
+            user: { id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar }
+        });
+    } catch (error) {
+        logger.error('Google auth error', { error: error.message });
+        return serverError(res, 'Google authentication failed', error);
+    }
+};
+
 
 // ── GET /api/v2/auth/me ─────────────────────────────────────────
 exports.getMe = async (req, res) => {
